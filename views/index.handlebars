@@ -1,0 +1,29 @@
+<div id="wrapper">
+  <h1>Headlines!</h1>
+
+  <h2>Articles</h2>
+
+  <div id="articles">
+    <ul>
+      {{#each articles}}
+        <li>
+          {{name}}
+          <button class="delete-article" data-id="{{this.id}}">DELETE!</button>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div id="comments">
+    <h2>Add a Comment</h2>
+    <form class="create-form">
+
+      <div class="form-group">
+        <label for="cmnt">Comment:</label>
+        <input type="text" id="cmnt" name="comment">
+      </div>
+
+      <button type="submit">Add Comment</button>
+    </form>
+  </div>
+</div>
