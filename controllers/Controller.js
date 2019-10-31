@@ -11,7 +11,26 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 
 // Create all our routes and set up logic within those routes where required.
-// A GET route for scraping the echoJS website
+
+// A GET route for retrieving data from the db
+router.get("/", function (req, res) {
+  // Grab every document in the Articles collection
+  db.Article.find({})
+    .then(function(dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      // res.json(dbArticle);
+      const hbsObject = {
+        articles: dbArticle
+      };
+      res.render("index", hbsObject);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
+});
+
+// A GET route for scraping the NY Times website
 router.get("/scrape", function (req, res) {
   // First, we grab the body of the html with axios
   axios.get("https://www.nytimes.com").then(function (response) {
@@ -31,10 +50,6 @@ router.get("/scrape", function (req, res) {
         abstract += $(elm).text().trim() + "\n";
       });
       let url = "https://www.nytimes.com/" + $(this).find("a").attr("href");
-
-      // console.log("title: ", title);
-      // console.log("abstract: ", abstract);
-      // console.log("url: ", url);
 
       // Push article's data into the results array defined earlier
       results.push({
@@ -57,8 +72,6 @@ router.get("/scrape", function (req, res) {
 
     // Send a message to the client
     res.send("Scrape Complete");
-    // OJO
-    res.redirect("/");
   });
 });
 
