@@ -7,8 +7,8 @@
     <ul>
       {{#each articles}}
         <li>
-          {{name}}
-          <button class="delete-article" data-id="{{this.id}}">DELETE!</button>
+          {{this.headline}} {{this.summary}} {{this.URL}}
+          <button class="delete-article" data-id="{{this.id}}"> DELETE!</button>
         </li>
       {{/each}}
     </ul>

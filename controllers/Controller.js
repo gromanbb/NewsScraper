@@ -19,31 +19,65 @@ router.get("/scrape", function (req, res) {
     const $ = cheerio.load(response.data);
 
     // An empty array to save the data that we'll scrape
-    var results = [];
+    let results = [];
 
     // Select each element in the HTML body from which you want information.
+    // $(".assetWrapper").each(function (i, element) {
     $("article").each(function (i, element) {
-      // Save these results in an object that we'll push into the results array we defined earlier
-      //results.push($(element).children().contents().toArray());
-      results.push($(element));
-      for (let j = 0; j < results.length; j++) {
-        console.log("results[j]: " + results[j] + "==> j:" + j);
-      }
-      //results.push($(element).children().text());
+      let title = $(this).find("h2").text().trim();
+      //OJO let abstract = $(this).find("p").text().trim();
+      let abstract = "";
+      $(this).find("p").each(function(j, elm) {
+        abstract += $(elm).text().trim() + "\n";
+      });
+      let url = "https://www.nytimes.com/" + $(this).find("a").attr("href");
+
+      // console.log("title: ", title);
+      // console.log("abstract: ", abstract);
+      // console.log("url: ", url);
+
+      // Push article's data into the results array defined earlier
+      results.push({
+        headline: title,
+        summary: abstract,
+        URL: url
+      });
     });
 
-    // Log the results once you've looped through each of the elements found with cheerio
-    console.log("results[0]: ", results[0]);
-    console.log("results[1]: ", results[1]);
-    console.log("results[2]: ", results[2]);
-    //console.log("results[0].children[0]: ", results[0].children[0]);
+    // Create Articles using the `results` array built from scraping
+    db.Article.insertMany(results)
+      .then(function(dbArticle) {
+        // View the added result in the console
+        console.log(dbArticle);
+      })
+      .catch(function (err) {
+        // If an error occurred, log it
+        console.log(err);
+      });
 
+    // Send a message to the client
+    res.send("Scrape Complete");
+    // OJO
+    res.redirect("/");
   });
 });
 
 // Route for getting all Articles from the db
 router.get("/articles", function (req, res) {
-  res.render("index");
+  // Grab every document in the Articles collection
+  db.Article.find({})
+    .then(function(dbArticle) {
+      // If we were able to successfully find Articles, send them back to the client
+      // res.json(dbArticle);
+      const hbsObject = {
+        articles: dbArticle
+      };
+      res.render("index", hbsObject);
+    })
+    .catch(function(err) {
+      // If an error occurred, send it to the client
+      res.json(err);
+    });
 });
 
 // Export routes for server.js to use.

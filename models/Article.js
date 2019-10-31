@@ -11,21 +11,21 @@ const ArticleSchema = new Schema({
   // `Headline` - article's title
   headline: {
     type: String,
-    trim: true,
-    required: true
+    required: true,
+    trim: true
   },
   // `Summary` - article's short summary
   summary: {
     type: String,
-    trim: true,
-    required: true
+    // required: true,
+    trim: true
   },
   // `URL` - article's original URL
   URL: {
     type: String,
-    trim: true,
+    // required: true,
     lowercase: true,
-    required: true
+    trim: true
   },
   createdAt: {
     type: Date,
