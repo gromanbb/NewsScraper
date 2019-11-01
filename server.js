@@ -6,6 +6,8 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
+const dotenv = require("dotenv").config();
+const keys = require("./keys.js");
 
 // Initialize Express
 const app = express();
@@ -21,8 +23,10 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
+console.log("process.env.MONGODB_URI: ", process.env.MONGODB_URI);
 // If deployed, use the deployed database. Otherwise use the local Mongo DB
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraperdb";
+console.log("MONGODB_URI: ", MONGODB_URI);
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Set Handlebars.
