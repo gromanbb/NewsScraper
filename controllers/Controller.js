@@ -62,11 +62,13 @@ router.get("/scrape", function (req, res) {
     // Create Articles using the `results` array built from scraping
     db.Article.insertMany(results)
       .then(function(dbArticle) {
+        alert("insert many", dbArticle);
         // View the added result in the console
         console.log(dbArticle);
       })
       .catch(function (err) {
         // If an error occurred, log it
+        alert("insert many Errors:", err);
         console.log(err);
       });
 
