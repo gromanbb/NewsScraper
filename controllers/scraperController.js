@@ -15,7 +15,7 @@ const cheerio = require("cheerio");
 // A GET route for retrieving data from the db
 router.get("/", function (req, res) {
   // Grab every document in the Articles collection
-  db.Article.find({})
+  db.Article.find({ deleted: false })
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       // res.json(dbArticle);
@@ -33,23 +33,23 @@ router.get("/", function (req, res) {
 // A GET route for scraping the NY Times website
 router.get("/scrape", function (req, res) {
   // First, we grab the body of the html with axios
-  axios.get("https://www.nytimes.com").then(function (response) {
+  axios.get("https://www.chicagobusiness.com").then(function (response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
 
+    //OJO console.log("$Cheerio ==> ", $("div.view-content").find("div.views-row").html());
+
     // An empty array to save the data that we'll scrape
     let results = [];
+    let title = "";
+    let url = "";
+    let abstract = "";
 
     // Select each element in the HTML body from which you want information.
-    // $(".assetWrapper").each(function (i, element) {
-    $("article").each(function (i, element) {
-      let title = $(this).find("h2").text().trim();
-      //OJO let abstract = $(this).find("p").text().trim();
-      let abstract = "";
-      $(this).find("p").each(function(j, elm) {
-        abstract += $(elm).text().trim() + "\n";
-      });
-      let url = "https://www.nytimes.com/" + $(this).find("a").attr("href");
+    $("div.view-content").find("div.views-row").each(function (i, element) {
+      title = $(this).find("div.middle-article-headline").find("a").text().trim();
+      url = "https://www.chicagobusiness.com" + $(this).find("div.middle-article-headline").find("a").attr("href");
+      abstract = $(this).find("div.feature-article-summary").find("a").find("p").text().trim();
 
       // Push article's data into the results array defined earlier
       results.push({
@@ -62,13 +62,11 @@ router.get("/scrape", function (req, res) {
     // Create Articles using the `results` array built from scraping
     db.Article.insertMany(results)
       .then(function(dbArticle) {
-        alert("insert many", dbArticle);
         // View the added result in the console
         console.log(dbArticle);
       })
       .catch(function (err) {
         // If an error occurred, log it
-        alert("insert many Errors:", err);
         console.log(err);
       });
 
@@ -80,8 +78,8 @@ router.get("/scrape", function (req, res) {
 // Route for getting all Articles from the db
 router.get("/articles", function (req, res) {
   // Grab every document in the Articles collection
-  db.Article.find({})
-    .then(function(dbArticle) {
+  db.Article.find({deleted: false})
+    .then(function (dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
       // res.json(dbArticle);
       const hbsObject = {
@@ -89,7 +87,7 @@ router.get("/articles", function (req, res) {
       };
       res.render("index", hbsObject);
     })
-    .catch(function(err) {
+    .catch(function (err) {
       // If an error occurred, send it to the client
       res.json(err);
     });

@@ -6,12 +6,12 @@ const Schema = mongoose.Schema;
 // Using the Schema constructor, create a new ArticleSchema object
 const ArticleSchema = new Schema({
 
-// ojo ===> Feel free to add more content to your database (photos, bylines, and so on).
+//OJO ===> Feel free to add more content to your database (photos, bylines, and so on).
 
   // `Headline` - article's title
   headline: {
     type: String,
-    required: true,
+    // required: true,
     trim: true
   },
   // `Summary` - article's short summary
@@ -30,6 +30,10 @@ const ArticleSchema = new Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  deleted: {
+    type: Boolean,
+    default: false
   },
   // `Comment` is an object that stores a Comment id
   // The ref property links the ObjectId to the Comment model

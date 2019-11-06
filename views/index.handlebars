@@ -3,13 +3,39 @@
 
   <h2>Articles</h2>
 
-  <div id="articles">
+  {{!-- <div id="articles">
     <ul>
       {{#each articles}}
         <li>
-          {{this.headline}} {{this.summary}} {{this.URL}}
+          {{this.headline}}
+          {{this.summary}}
+          {{this.URL}}
           <button class="delete-article" data-id="{{this.id}}"> DELETE!</button>
+          <button class="save-article" data-id="{{this.id}}">Save Article</button>
         </li>
+      {{/each}}
+    </ul>
+  </div> --}}
+
+  <div id="articles">
+    <ul>
+      {{#each articles}}
+        {{!-- <li>
+          {{this.headline}}
+          {{this.summary}}
+          {{this.URL}}
+
+        </li> --}}
+        <div class="card">
+          <div class="card-header">
+            <a href="{{this.URL}}">{{this.headline}}</a>
+            {{!-- <a href="#" class="btn btn-success">Save Article</a> --}}
+            <button class="btn btn-success" class="save-article" data-id="{{this.id}}">Save Article</button>
+          </div>
+          <div class="card-body">
+            <p class="card-text">{{this.summary}}</p>
+          </div>
+        </div>
       {{/each}}
     </ul>
   </div>

@@ -8,7 +8,7 @@ body { background-color: #F2F6D0 }
 #articles {
   display: inline-block;
   overflow: auto;
-  width: 60%;
+  width: 80%;
   height: 700px;
 }
 #comments {

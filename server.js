@@ -6,8 +6,8 @@
 const express = require("express");
 const logger = require("morgan");
 const mongoose = require("mongoose");
-const dotenv = require("dotenv").config();
-const keys = require("./keys.js");
+//OJO
+require("dotenv").config();
 
 // Initialize Express
 const app = express();
@@ -23,10 +23,13 @@ app.use(express.json());
 // Make public a static folder
 app.use(express.static("public"));
 
-console.log("process.env.MONGODB_URI: ", process.env.MONGODB_URI);
+//OJO console.log("before ==> process.env.MONGODB_URI: ", process.env.MONGODB_URI);
+
 // If deployed, use the deployed database. Otherwise use the local Mongo DB
 const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/newsscraperdb";
-console.log("MONGODB_URI: ", MONGODB_URI);
+
+//OJO console.log("after ==> MONGODB_URI: ", MONGODB_URI);
+
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Set Handlebars.
@@ -35,12 +38,12 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Import routes and give the server access to them.
-const routes = require("./controllers/Controller.js");
+const routes = require("./controllers/scraperController.js");
 app.use(routes);
 
 // Start our server so that it can begin listening to client requests.
-app.listen(PORT);
-// app.listen(PORT, function() {
-//   // Log (server-side) when our server has started
-//   console.log("Server listening on: http://localhost:" + PORT);
-// });
+//OJO app.listen(PORT);
+app.listen(PORT, function() {
+  // Log (server-side) when our server has started
+  console.log("Server listening on: http://localhost:" + PORT);
+});
