@@ -18,7 +18,6 @@ router.get("/", function (req, res) {
   db.Article.find({ deleted: false })
     .then(function(dbArticle) {
       // If we were able to successfully find Articles, send them back to the client
-      // res.json(dbArticle);
       const hbsObject = {
         articles: dbArticle
       };
@@ -30,11 +29,11 @@ router.get("/", function (req, res) {
     });
 });
 
-// A GET route for scraping the NY Times website
+// A GET route for scraping Crain's Chicago Business website
 router.get("/scrape", function (req, res) {
-  // First, we grab the body of the html with axios
+  // Grab the body of the html with axios
   axios.get("https://www.chicagobusiness.com").then(function (response) {
-    // Then, we load that into cheerio and save it to $ for a shorthand selector
+    // Load that into cheerio and save it to $ for a shorthand selector
     const $ = cheerio.load(response.data);
 
     //OJO console.log("$Cheerio ==> ", $("div.view-content").find("div.views-row").html());

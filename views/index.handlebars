@@ -1,55 +1,59 @@
 <div id="wrapper">
-  <h1>Headlines!</h1>
+  <div class="row align-items-center">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="/">NewsScraper</a>
+      <button class="navbar-toggler" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01"
+        aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarColor01">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/saved">Saved Articles</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-danger scrape-new">SCRAPE NEW ARTICLES!</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-danger clear">CLEAR ARTICLES!</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
 
-  <h2>Articles</h2>
-
-  {{!-- <div id="articles">
-    <ul>
+  <div class="row justify-content-around">
+    <div class="col-lg-7 col-auto mr-auto align-self-center" id="articles">
       {{#each articles}}
-        <li>
-          {{this.headline}}
-          {{this.summary}}
-          {{this.URL}}
-          <button class="delete-article" data-id="{{this.id}}"> DELETE!</button>
-          <button class="save-article" data-id="{{this.id}}">Save Article</button>
-        </li>
-      {{/each}}
-    </ul>
-  </div> --}}
-
-  <div id="articles">
-    <ul>
-      {{#each articles}}
-        {{!-- <li>
-          {{this.headline}}
-          {{this.summary}}
-          {{this.URL}}
-
-        </li> --}}
-        <div class="card">
-          <div class="card-header">
-            <a href="{{this.URL}}">{{this.headline}}</a>
-            {{!-- <a href="#" class="btn btn-success">Save Article</a> --}}
-            <button class="btn btn-success" class="save-article" data-id="{{this.id}}">Save Article</button>
-          </div>
-          <div class="card-body">
-            <p class="card-text">{{this.summary}}</p>
+        <div class="card-deck">
+          <div class="card">
+            <div class="card-header">
+              <a href="{{this.URL}}">{{this.headline}}</a>
+              {{!-- <a href="#" class="btn btn-success">Save Article</a> --}}
+              <button class="btn btn-success" class="save-article" data-id="{{this.id}}">SAVE ARTICLE!</button>
+            </div>
+            <div class="card-body">
+              <p class="card-text">{{this.summary}}</p>
+            </div>
           </div>
         </div>
       {{/each}}
-    </ul>
+    </div>
+    <div class="col-lg-5 col-auto align-self-center" id="comments">
+      <h2>Add a Comment</h2>
+      <form class="create-form">
+        <div class="form-group">
+          <label for="cmnt">Comment:</label>
+          <input type="text" id="cmnt" name="comment">
+        </div>
+        <button type="submit">Add Comment</button>
+      </form>
+    </div>
   </div>
 
-  <div id="comments">
-    <h2>Add a Comment</h2>
-    <form class="create-form">
-
-      <div class="form-group">
-        <label for="cmnt">Comment:</label>
-        <input type="text" id="cmnt" name="comment">
-      </div>
-
-      <button type="submit">Add Comment</button>
-    </form>
-  </div>
 </div>
